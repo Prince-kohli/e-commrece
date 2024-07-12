@@ -1,31 +1,43 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { Link } from "react-router-dom";
+// import axios from "axios";
+import products from "./products.json";
+import Pagination from "./Pagination";
+const Home = () => {
+  const [data, setdata] = useState(products);
 
-const About = () => {
-  const [data, setdata] = useState([]);
+  const shopResult = "showing 01 - 12 of 53 result";
 
-  console.log("dta", data);
-  const fetchdata = () => {
-    axios.get("https://api.escuelajs.co/api/v1/products").then((res) => {
-      setdata(res.data);
-    });
+  let pageItem = 4.416666666666667;
+  // const fetchdata = () => {
+  //   axios.get("/products.json").then((res) => {
+  //     setdata(res.data);
+  //   });
+  // };
+  console.log("length", data);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const productsPerPage = 12;
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = data.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // function to change current page
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
-  useEffect(() => {
-    fetchdata();
-  }, []);
 
   const handleChange = (e) => {
     const searchdata = e.target.value;
     if (searchdata.length > 2) {
       const filterItem = data?.filter((item) =>
-        item.title.includes(searchdata)
+        item?.title.toLowerCase().includes(searchdata)
       );
       console.log("filter", filterItem);
       setdata(filterItem);
     } else {
-      fetchdata();
+      setdata(products);
     }
   };
 
@@ -46,7 +58,7 @@ const About = () => {
   };
 
   return (
-    <div>
+    <>
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container">
           <Link to="/">
@@ -144,9 +156,118 @@ const About = () => {
         </div>
       </nav>
 
-      <h1>About </h1>
+      <div
+        id="carouselExampleAutoplaying"
+        class="carousel slide"
+        data-bs-ride="carousel"
+      >
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img
+              src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/9384b37a848c5e60.jpg?q=20"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/1e513363d2412d0a.jpg?q=20"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/354cde8026deab5a.jpg?q=20"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/1aaeb0a6531bef88.jpg?q=20"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+          <div class="carousel-item">
+            <img
+              src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/bdd9bb733f1c0b71.jpg?q=20"
+              class="d-block w-100"
+              alt="..."
+            />
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleAutoplaying"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleAutoplaying"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
 
-      <div className="container-fluid footer" style={{ marginTop: 220 }}>
+      <div className="container-fluid">
+        <div className="cards">
+          {currentProducts.length !== 0 ? (
+            currentProducts?.map((product) => (
+              <div className="card1">
+                <div className="card" key={product?.id}>
+                  <img
+                    src={product.images[0]}
+                    class="card-img-top"
+                    alt="..."
+                    height={266}
+                    width={266}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{product?.category?.name}</h5>
+
+                    <p className="card-text">{product?.title}</p>
+                    <div className="row footr">
+                      <div className="col-sm-6">
+                        <p className="text1 card-text">${product?.price}</p>
+                      </div>
+                      <div className="col-sm-6">
+                        <button className="btn btn-warning">Add to Cart</button>
+                      </div>
+                      <div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <h1>User not found</h1>
+          )}
+        </div>
+
+        <div className="pagination">
+          <div className="row">
+            <div className="left col-sm-6"></div>
+            <Pagination
+              productsPerPage={productsPerPage}
+              totalProduct={data.length}
+              paginate={paginate}
+              activePage={currentPage}
+            />
+            <div className="right col-sm-6"></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container-fluid footer ">
         <div className="row ">
           <div className="col-sm-2">
             <h6 style={{ marginTop: 20 }}>ABOUT</h6>
@@ -243,8 +364,8 @@ const About = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default About;
+export default Home;
