@@ -15,8 +15,11 @@ const AddItems = () => {
     setSingleProduct(remove);
   };
 
+  const totalprice = singleProduct.reduce((acc, item) => {
+    return acc + item.price;
+  }, 0);
+
   const length = singleProduct.length;
-  const totalprice = product.Provider[1];
 
   const handleChange = (e) => {
     const searchdata = e.target.value;
