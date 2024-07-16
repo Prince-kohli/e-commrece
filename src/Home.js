@@ -1,21 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 // import axios from "axios";
 import products from "./products.json";
 import Pagination from "./Pagination";
+import { productData } from "./Context";
 const Home = () => {
   const [data, setdata] = useState(products);
-
-  const shopResult = "showing 01 - 12 of 53 result";
-
-  let pageItem = 4.416666666666667;
-  // const fetchdata = () => {
-  //   axios.get("/products.json").then((res) => {
-  //     setdata(res.data);
-  //   });
-  // };
-  console.log("length", data);
+  console.log("data", data);
   const [currentPage, setCurrentPage] = useState(1);
+  const [cartItem, setCartItems] = useState([]);
+
+  console.log("cur", cartItem);
+
+  const totalprice = cartItem.reduce((acc, item) => {
+    return acc + item.price;
+  }, 0);
+  // console.log("totalprice", totalprice);
+  console.log("cartItems", totalprice);
+  const counter = 0;
+  productData.Provider = [cartItem, totalprice];
+
+  // const price = (productData.Provider = totalprice);
+
+  // console.log("Provider", price);
+
+  const cartItemsLength = cartItem.length;
+  console.log("length", cartItemsLength);
 
   const productsPerPage = 12;
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -42,19 +52,30 @@ const Home = () => {
   };
 
   const electronics = () => {
-    const filters = data.filter((item) => item.category.name === "Electronics");
+    const electronics = data?.filter(
+      (item) => item.category.name === "Electronics"
+    );
 
-    setdata(filters);
+    setdata(electronics);
   };
 
   const shoes = () => {
-    const filters = data.filter((item) => item.category.name === "Shoes");
-    setdata(filters);
+    const shoes = data?.filter((item) => item.category.name === "Shoes");
+    setdata(shoes);
   };
 
   const Shirts = () => {
-    const filters = data.filter((item) => item.category.name === "Furniture");
-    setdata(filters);
+    const furniture = data?.filter(
+      (item) => item.category.name === "Furniture"
+    );
+    setdata(furniture);
+  };
+
+  const handleCart = (data) => {
+    console.log("handle", data);
+    const singleProduct = data;
+
+    setCartItems([...cartItem, singleProduct]);
   };
 
   return (
@@ -82,7 +103,7 @@ const Home = () => {
           <form
             class="d-flex"
             role="search"
-            style={{ marginLeft: 30, width: 600 }}
+            style={{ marginLeft: 30, width: 550 }}
           >
             <input
               class="form-control me-2"
@@ -98,7 +119,7 @@ const Home = () => {
                 <Link
                   class="nav-link active"
                   aria-current="page"
-                  style={{ marginLeft: 40 }}
+                  style={{ marginLeft: 10 }}
                   to="/"
                 >
                   Home
@@ -109,13 +130,13 @@ const Home = () => {
                 <Link
                   class="nav-link active"
                   href="#"
-                  style={{ marginLeft: 10 }}
+                  style={{ marginLeft: 5 }}
                   to="/about"
                 >
                   About
                 </Link>
               </li>
-              <li class="nav-item dropdown" style={{ marginLeft: 10 }}>
+              <li class="nav-item dropdown" style={{ marginLeft: 2 }}>
                 <a
                   class="nav-link active dropdown-toggle"
                   href="#"
@@ -127,12 +148,12 @@ const Home = () => {
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a class="dropdown-item" onClick={electronics}>
+                    <a href="#" class="dropdown-item" onClick={electronics}>
                       Electronics
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" onClick={shoes}>
+                    <a href="#" class="dropdown-item" onClick={shoes}>
                       Shoes
                     </a>
                   </li>
@@ -140,7 +161,7 @@ const Home = () => {
                     <hr class="dropdown-divider" />
                   </li>
                   <li>
-                    <a class="dropdown-item" onClick={Shirts}>
+                    <a href="#" class="dropdown-item" onClick={Shirts}>
                       Furniture
                     </a>
                   </li>
@@ -150,6 +171,25 @@ const Home = () => {
                 <Link class="nav-link active" to="/login">
                   Login
                 </Link>
+              </li>
+
+              <li class="nav-item" style={{ marginTop: 10, marginLeft: 5 }}>
+                <Link to="/addCart">
+                  {" "}
+                  {cartItemsLength === 0 ? (
+                    <i class="fa-solid fa-cart-shopping"> </i>
+                  ) : (
+                    <>
+                      <i class="fa-solid fa-cart-shopping"> </i>
+                      <span class="badge badge-warning" id="lblCartCount">
+                        {cartItemsLength}
+                      </span>
+                    </>
+                  )}
+                </Link>
+              </li>
+              <li class="nav-item" style={{ marginTop: 10, marginLeft: 0 }}>
+                <p>Cart</p>
               </li>
             </ul>
           </div>
@@ -240,7 +280,12 @@ const Home = () => {
                         <p className="text1 card-text">${product?.price}</p>
                       </div>
                       <div className="col-sm-6">
-                        <button className="btn btn-warning">Add to Cart</button>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => handleCart(product)}
+                        >
+                          Add to Cart
+                        </button>
                       </div>
                       <div></div>
                     </div>

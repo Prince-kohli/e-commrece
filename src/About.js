@@ -1,20 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
+import products from "./products.json";
+// import axios from "axios";
 
 const About = () => {
-  const [data, setdata] = useState([]);
+  const [data, setdata] = useState(products);
 
   console.log("dta", data);
-  const fetchdata = () => {
-    axios.get("https://api.escuelajs.co/api/v1/products").then((res) => {
-      setdata(res.data);
-    });
-  };
-  useEffect(() => {
-    fetchdata();
-  }, []);
+  // const fetchdata = () => {
+  //   axios.get("https://api.escuelajs.co/api/v1/products").then((res) => {
+  //     setdata(res.data);
+  //   });
+  // };
+  // useEffect(() => {
+  //   fetchdata();
+  // }, []);
 
   const handleChange = (e) => {
     const searchdata = e.target.value;
@@ -25,7 +26,7 @@ const About = () => {
       console.log("filter", filterItem);
       setdata(filterItem);
     } else {
-      fetchdata();
+      setdata(products);
     }
   };
 
@@ -92,7 +93,6 @@ const About = () => {
                   Home
                 </Link>
               </li>
-
               <li class="nav-item">
                 <Link
                   class="nav-link active"
@@ -139,6 +139,7 @@ const About = () => {
                   Login
                 </Link>
               </li>
+              s
             </ul>
           </div>
         </div>
@@ -146,7 +147,7 @@ const About = () => {
 
       <h1>About </h1>
 
-      <div className="container-fluid footer" style={{ marginTop: 220 }}>
+      <div className="container-fluid footer">
         <div className="row ">
           <div className="col-sm-2">
             <h6 style={{ marginTop: 20 }}>ABOUT</h6>

@@ -174,3 +174,43 @@
   font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
   font-size: large;
 }
+
+.badge {
+  padding-left: 9px;
+  padding-right: 9px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+  background-color: #c67605;
+}
+#lblCartCount {
+  font-size: 12px;
+  background: #ff0000;
+  color: #fff;
+  padding: 0 5px;
+  vertical-align: top;
+  margin-left: -10px;
+}
+
+.card {
+  width: 700px;
+}
+.text {
+  text-align: left;
+}
+
+.desc {
+  margin-left: 200px;
+  margin-top: 30px;
+  line-height: 1px;
+}
+.descs {
+  text-align: left;
+}
+.total {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
