@@ -7,16 +7,6 @@ import products from "./products.json";
 const About = () => {
   const [data, setdata] = useState(products);
 
-  console.log("dta", data);
-  // const fetchdata = () => {
-  //   axios.get("https://api.escuelajs.co/api/v1/products").then((res) => {
-  //     setdata(res.data);
-  //   });
-  // };
-  // useEffect(() => {
-  //   fetchdata();
-  // }, []);
-
   const handleChange = (e) => {
     const searchdata = e.target.value;
     if (searchdata.length > 2) {
@@ -115,12 +105,12 @@ const About = () => {
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a class="dropdown-item" onClick={electronics}>
+                    <a href="#" class="dropdown-item" onClick={electronics}>
                       Electronics
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" onClick={shoes}>
+                    <a href="#" class="dropdown-item" onClick={shoes}>
                       Shoes
                     </a>
                   </li>
@@ -128,7 +118,7 @@ const About = () => {
                     <hr class="dropdown-divider" />
                   </li>
                   <li>
-                    <a class="dropdown-item" onClick={Shirts}>
+                    <a href="#" class="dropdown-item" onClick={Shirts}>
                       Furniture
                     </a>
                   </li>
@@ -139,7 +129,6 @@ const About = () => {
                   Login
                 </Link>
               </li>
-              s
             </ul>
           </div>
         </div>
@@ -147,7 +136,7 @@ const About = () => {
 
       <h1>About </h1>
 
-      <div className="container-fluid footer">
+      <div className="container-fluid footer" style={{ marginTop: 200 }}>
         <div className="row ">
           <div className="col-sm-2">
             <h6 style={{ marginTop: 20 }}>ABOUT</h6>

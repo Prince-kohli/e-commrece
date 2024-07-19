@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const productData = createContext([]);
+export const productData = createContext();

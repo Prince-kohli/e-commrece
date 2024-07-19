@@ -5,18 +5,20 @@ import { productData } from "./Context";
 
 const AddItems = () => {
   const [data, setdata] = useState(products);
+  const { output, setItem } = useContext(productData);
+  const [singleProduct, setSingleProduct] = useState(output);
 
-  const product = useContext(productData);
-  console.log("Products", product);
-  const singleProducts = product.Provider[0];
-  const [singleProduct, setSingleProduct] = useState(singleProducts);
   const removeItem = (item) => {
-    const remove = singleProduct.filter((items) => items.id !== item.id);
+    const remove = singleProduct?.filter(
+      (items) => items[0]?.id !== item[0]?.id
+    );
     setSingleProduct(remove);
+    setItem(remove);
+    localStorage.setItem("Cart", JSON.stringify(remove));
   };
 
-  const totalprice = singleProduct.reduce((acc, item) => {
-    return acc + item.price;
+  const totalprice = singleProduct?.reduce((acc, item) => {
+    return acc + item[0]?.price;
   }, 0);
 
   const length = singleProduct.length;
@@ -33,6 +35,22 @@ const AddItems = () => {
       setdata(products);
     }
   };
+
+  const handleIncrese = (items) => {
+    const b = (items[0].qty += 1);
+    setSingleProduct([...singleProduct]);
+  };
+  const handleDecrese = (items) => {
+    if (items[0].qty > 1) {
+      let c = (items[0].qty -= 1);
+    }
+
+    setSingleProduct([...singleProduct]);
+  };
+  const calculatePrice = (item) => {
+    return item[0]?.qty * item[0]?.price;
+  };
+
   return (
     <div>
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -99,20 +117,39 @@ const AddItems = () => {
           </div>
         </div>
       </nav>
-
-      <div className="container" style={{ marginTop: 20 }}>
-        <div className="row">
-          <div className="col-sm-6">
-            <div className="container">
-              {singleProduct.length === 0 ? (
-                <h1> Add Product</h1>
-              ) : (
-                singleProduct?.map((item) => (
+      {singleProduct.length === 0 ? (
+        <div>
+          <img
+            className="img"
+            src="https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
+          />
+          <h4>Your cart is empty!</h4>
+          <h6>Add items to it now.</h6>
+          <Link
+            class=" btn  btn-primary"
+            to="/"
+            role="button"
+            style={{
+              width: 300,
+              height: 40,
+              textAlign: "center",
+              marginTop: 5,
+            }}
+          >
+            Shop now
+          </Link>
+        </div>
+      ) : (
+        <div className="container" style={{ marginTop: 20 }}>
+          <div className="row">
+            <div className="col-sm-6">
+              <div className="container">
+                {singleProduct?.map((items) => (
                   <div className="card mb-3">
                     <div className="row g-0">
                       <div className="col-md-4">
                         <img
-                          src={item?.images}
+                          src={items[0]?.images}
                           class="img-fluid rounded-start"
                           alt="..."
                           style={{ marginRight: 10 }}
@@ -120,58 +157,82 @@ const AddItems = () => {
                       </div>
                       <div class="col-md-8">
                         <div className="card-body">
-                          <h5 className="card-title">{item?.category?.name}</h5>
+                          <h5 className="card-title">
+                            {items[0]?.category?.name}
+                          </h5>
                           {/* <h6 className="card-text">{item?.title}</h6> */}
                           <p
                             className=" card-text"
                             style={{ textAlign: "left", fontSize: "small" }}
                           >
-                            {item?.description}
+                            {items[0]?.description}
                           </p>
                           <h3
                             className="card-text"
                             style={{ textAlign: "left" }}
                           >
-                            ${item?.price}
+                            $ {calculatePrice(items)}
                           </h3>
-                          <button
-                            type="button"
-                            class="btn btn-danger"
-                            onClick={() => removeItem(item)}
-                          >
-                            Remove item
-                          </button>
+                          <div className="">
+                            <div className="row">
+                              <div className=" counter  col-sm-6">
+                                <button
+                                  className="butn "
+                                  onClick={() => handleDecrese(items)}
+                                >
+                                  -
+                                </button>
+                                <h6>{items[0]?.qty}</h6>
+
+                                <button
+                                  className="butn "
+                                  onClick={() => handleIncrese(items)}
+                                >
+                                  +
+                                </button>
+                              </div>
+                              <div className="col-sm-6">
+                                <button
+                                  type="button"
+                                  class="btn btn-danger"
+                                  onClick={() => removeItem(items)}
+                                >
+                                  Remove item
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                ))
-              )}
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="col-sm-6">
-            <div className="header">
-              <h4>PRICE DETAILS</h4>
-              <div className="desc">
-                <div className="row">
-                  <div className="descs  col-sm-6">
-                    <h6>Price({length} item)</h6>
-                    <h6>Discount</h6>
-                    <h6>Delivery Charges</h6>
-                    <h6 className="total">Total Amount</h6>
-                  </div>
-                  <div className="col-sm-6">
-                    <h6>${totalprice}</h6>
-                    <h6>00</h6>
-                    <h6>Free</h6>
-                    <h6>${totalprice}</h6>
+            <div className="col-sm-6">
+              <div className="header">
+                <h4>PRICE DETAILS</h4>
+                <div className="desc">
+                  <div className="row">
+                    <div className="descs  col-sm-6">
+                      <h6>Price({length} item)</h6>
+                      <h6>Discount</h6>
+                      <h6>Delivery Charges</h6>
+                      <h6 className="total">Total Amount</h6>
+                    </div>
+                    <div className="col-sm-6">
+                      <h6>${totalprice}</h6>
+                      <h6>00</h6>
+                      <h6>Free</h6>
+                      <h6>${totalprice}</h6>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

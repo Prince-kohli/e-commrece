@@ -1,38 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-// import axios from "axios";
 import products from "./products.json";
 import Pagination from "./Pagination";
 import { productData } from "./Context";
+
 const Home = () => {
   const [data, setdata] = useState(products);
-  console.log("data", data);
   const [currentPage, setCurrentPage] = useState(1);
-  const [cartItem, setCartItems] = useState([]);
-
-  console.log("cur", cartItem);
-
-  const totalprice = cartItem.reduce((acc, item) => {
-    return acc + item.price;
-  }, 0);
-  // console.log("totalprice", totalprice);
-  console.log("cartItems", totalprice);
-  const counter = 0;
-  productData.Provider = [cartItem, totalprice];
-
-  // const price = (productData.Provider = totalprice);
-
-  // console.log("Provider", price);
-
-  const cartItemsLength = cartItem.length;
-  console.log("length", cartItemsLength);
+  const { item, setItem, cartItemlenght } = useContext(productData);
 
   const productsPerPage = 12;
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = data.slice(indexOfFirstProduct, indexOfLastProduct);
-
-  // function to change current page
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -44,7 +24,7 @@ const Home = () => {
       const filterItem = data?.filter((item) =>
         item?.title.toLowerCase().includes(searchdata)
       );
-      console.log("filter", filterItem);
+
       setdata(filterItem);
     } else {
       setdata(products);
@@ -71,11 +51,11 @@ const Home = () => {
     setdata(furniture);
   };
 
-  const handleCart = (data) => {
-    console.log("handle", data);
-    const singleProduct = data;
+  const handleCart = (product) => {
+    const singleProduct = data.filter((num) => num.id === product.id);
 
-    setCartItems([...cartItem, singleProduct]);
+    setItem([...item, singleProduct]);
+    localStorage.setItem("Cart", JSON.stringify([...item, singleProduct]));
   };
 
   return (
@@ -138,7 +118,7 @@ const Home = () => {
               </li>
               <li class="nav-item dropdown" style={{ marginLeft: 2 }}>
                 <a
-                  class="nav-link active dropdown-toggle"
+                  class="nav-link dropdown-toggle"
                   href="#"
                   role="button"
                   data-bs-toggle="dropdown"
@@ -176,13 +156,13 @@ const Home = () => {
               <li class="nav-item" style={{ marginTop: 10, marginLeft: 5 }}>
                 <Link to="/addCart">
                   {" "}
-                  {cartItemsLength === 0 ? (
+                  {cartItemlenght === 0 ? (
                     <i class="fa-solid fa-cart-shopping"> </i>
                   ) : (
                     <>
                       <i class="fa-solid fa-cart-shopping"> </i>
                       <span class="badge badge-warning" id="lblCartCount">
-                        {cartItemsLength}
+                        {cartItemlenght}
                       </span>
                     </>
                   )}
