@@ -17,10 +17,6 @@ const AddItems = () => {
     localStorage.setItem("Cart", JSON.stringify(remove));
   };
 
-  const totalprice = singleProduct?.reduce((acc, item) => {
-    return acc + item[0]?.price;
-  }, 0);
-
   const length = singleProduct.length;
 
   const handleChange = (e) => {
@@ -39,17 +35,23 @@ const AddItems = () => {
   const handleIncrese = (items) => {
     const b = (items[0].qty += 1);
     setSingleProduct([...singleProduct]);
+    localStorage.setItem("Cart", JSON.stringify(singleProduct, b));
   };
   const handleDecrese = (items) => {
     if (items[0].qty > 1) {
-      let c = (items[0].qty -= 1);
+      items[0].qty -= 1;
     }
 
     setSingleProduct([...singleProduct]);
+    localStorage.setItem("Cart", JSON.stringify(singleProduct));
   };
   const calculatePrice = (item) => {
     return item[0]?.qty * item[0]?.price;
   };
+
+  const total = singleProduct.reduce((acc, item) => {
+    return acc + item[0].qty * item[0].price;
+  }, 0);
 
   return (
     <div>
@@ -221,10 +223,10 @@ const AddItems = () => {
                       <h6 className="total">Total Amount</h6>
                     </div>
                     <div className="col-sm-6">
-                      <h6>${totalprice}</h6>
+                      <h6>${total}</h6>
                       <h6>00</h6>
                       <h6>Free</h6>
-                      <h6>${totalprice}</h6>
+                      <h6>${total}</h6>
                     </div>
                   </div>
                 </div>

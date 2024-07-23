@@ -9,7 +9,7 @@ const Wrapper = ({ children }) => {
 
   const cartItemlenght = output.length;
 
-  // console.log("get", get);
+  console.log("get", item);
 
   return (
     <productData.Provider value={{ item, setItem, cartItemlenght, output }}>

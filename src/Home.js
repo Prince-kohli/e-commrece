@@ -12,7 +12,7 @@ const Home = () => {
   const productsPerPage = 12;
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = data.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = data?.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -53,8 +53,11 @@ const Home = () => {
 
   const handleCart = (product) => {
     const singleProduct = data.filter((num) => num.id === product.id);
-
-    setItem([...item, singleProduct]);
+    const items = {
+      qty1: 1,
+      products: singleProduct,
+    };
+    setItem([...item, items]);
     localStorage.setItem("Cart", JSON.stringify([...item, singleProduct]));
   };
 
