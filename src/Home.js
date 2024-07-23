@@ -52,6 +52,8 @@ const Home = () => {
   };
 
   const handleCart = (product) => {
+    console.log("pro", product);
+
     const singleProduct = data.filter((num) => num.id === product.id);
 
     setItem([...item, singleProduct]);
