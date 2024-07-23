@@ -50,7 +50,10 @@ const AddItems = () => {
   };
 
   const total = singleProduct.reduce((acc, item) => {
-    return acc + item[0].qty * item[0].price;
+    return acc + item[0]?.qty * item[0]?.price;
+  }, 0);
+  const totalQty = singleProduct.reduce((acc, item) => {
+    return acc + item[0]?.qty;
   }, 0);
 
   return (
@@ -154,7 +157,7 @@ const AddItems = () => {
                           src={items[0]?.images}
                           class="img-fluid rounded-start"
                           alt="..."
-                          style={{ marginRight: 10 }}
+                          style={{ marginRight: 10, height: 300 }}
                         />
                       </div>
                       <div class="col-md-8">
@@ -217,7 +220,7 @@ const AddItems = () => {
                 <div className="desc">
                   <div className="row">
                     <div className="descs  col-sm-6">
-                      <h6>Price({length} item)</h6>
+                      <h6>Price({totalQty} item)</h6>
                       <h6>Discount</h6>
                       <h6>Delivery Charges</h6>
                       <h6 className="total">Total Amount</h6>

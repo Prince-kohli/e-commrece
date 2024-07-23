@@ -53,11 +53,8 @@ const Home = () => {
 
   const handleCart = (product) => {
     const singleProduct = data.filter((num) => num.id === product.id);
-    const items = {
-      qty1: 1,
-      products: singleProduct,
-    };
-    setItem([...item, items]);
+
+    setItem([...item, singleProduct]);
     localStorage.setItem("Cart", JSON.stringify([...item, singleProduct]));
   };
 
