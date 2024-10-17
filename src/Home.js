@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import products from "./products.json";
 import Pagination from "./Pagination";
@@ -8,7 +8,7 @@ const Home = () => {
   const [data, setdata] = useState(products);
   const [currentPage, setCurrentPage] = useState(1);
   const { item, setItem, cartItemlenght } = useContext(productData);
-
+  console.log("pro", data);
   const productsPerPage = 12;
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -32,7 +32,7 @@ const Home = () => {
   };
 
   const electronics = () => {
-    const electronics = data?.filter(
+    const electronics = products?.filter(
       (item) => item.category.name === "Electronics"
     );
 
@@ -40,24 +40,23 @@ const Home = () => {
   };
 
   const shoes = () => {
-    const shoes = data?.filter((item) => item.category.name === "Shoes");
+    const shoes = products?.filter((item) => item.category.name === "Shoes");
     setdata(shoes);
   };
 
   const Shirts = () => {
-    const furniture = data?.filter(
+    const furniture = products?.filter(
       (item) => item.category.name === "Furniture"
     );
     setdata(furniture);
   };
 
   const handleCart = (product) => {
-    console.log("pro", product);
+    console.log("produc", product);
 
-    const singleProduct = data.filter((num) => num.id === product.id);
-
-    setItem([...item, singleProduct]);
-    localStorage.setItem("Cart", JSON.stringify([...item, singleProduct]));
+    // const singleProduct = data.filter((num) => num.id === product.id);
+    const updatedItems = [...item, product];
+    setItem(updatedItems);
   };
 
   return (
@@ -139,9 +138,7 @@ const Home = () => {
                       Shoes
                     </a>
                   </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
+
                   <li>
                     <a href="#" class="dropdown-item" onClick={Shirts}>
                       Furniture
@@ -242,12 +239,12 @@ const Home = () => {
 
       <div className="container-fluid">
         <div className="cards">
-          {currentProducts.length !== 0 ? (
+          {currentProducts?.length !== 0 ? (
             currentProducts?.map((product) => (
               <div className="card1">
                 <div className="card" key={product?.id}>
                   <img
-                    src={product.images[0]}
+                    src={product?.images[0]}
                     class="card-img-top"
                     alt="..."
                     height={266}

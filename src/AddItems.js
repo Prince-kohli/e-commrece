@@ -6,12 +6,13 @@ import { productData } from "./Context";
 const AddItems = () => {
   const [data, setdata] = useState(products);
   const { output, setItem } = useContext(productData);
-  const [singleProduct, setSingleProduct] = useState(output);
+  const [singleProduct, setSingleProduct] = useState(
+    JSON.parse(localStorage.getItem("Cart"))
+  );
+  console.log("single", singleProduct);
 
   const removeItem = (item) => {
-    const remove = singleProduct?.filter(
-      (items) => items[0]?.id !== item[0]?.id
-    );
+    const remove = singleProduct?.filter((items) => items?.id !== item?.id);
     setSingleProduct(remove);
     setItem(remove);
     localStorage.setItem("Cart", JSON.stringify(remove));
@@ -33,27 +34,27 @@ const AddItems = () => {
   };
 
   const handleIncrese = (items) => {
-    const b = (items[0].qty += 1);
+    const b = (items.qty += 1);
     setSingleProduct([...singleProduct]);
     localStorage.setItem("Cart", JSON.stringify(singleProduct, b));
   };
   const handleDecrese = (items) => {
-    if (items[0].qty > 1) {
-      items[0].qty -= 1;
+    if (items.qty > 1) {
+      items.qty -= 1;
     }
 
     setSingleProduct([...singleProduct]);
     localStorage.setItem("Cart", JSON.stringify(singleProduct));
   };
-  const calculatePrice = (item) => {
-    return item[0]?.qty * item[0]?.price;
+  const calculatePrice = (items) => {
+    return items?.qty * items?.price;
   };
 
-  const total = singleProduct.reduce((acc, item) => {
-    return acc + item[0]?.qty * item[0]?.price;
+  const total = singleProduct.reduce((acc, items) => {
+    return acc + items?.qty * items?.price;
   }, 0);
   const totalQty = singleProduct.reduce((acc, item) => {
-    return acc + item[0]?.qty;
+    return acc + item?.qty;
   }, 0);
 
   return (
@@ -154,7 +155,7 @@ const AddItems = () => {
                     <div className="row g-0">
                       <div className="col-md-4">
                         <img
-                          src={items[0]?.images}
+                          src={items?.images}
                           class="img-fluid rounded-start"
                           alt="..."
                           style={{ marginRight: 10, height: 300 }}
@@ -163,14 +164,14 @@ const AddItems = () => {
                       <div class="col-md-8">
                         <div className="card-body">
                           <h5 className="card-title">
-                            {items[0]?.category?.name}
+                            {items?.category?.name}
                           </h5>
                           {/* <h6 className="card-text">{item?.title}</h6> */}
                           <p
                             className=" card-text"
                             style={{ textAlign: "left", fontSize: "small" }}
                           >
-                            {items[0]?.description}
+                            {items?.description}
                           </p>
                           <h3
                             className="card-text"
@@ -187,7 +188,7 @@ const AddItems = () => {
                                 >
                                   -
                                 </button>
-                                <h6>{items[0]?.qty}</h6>
+                                <h6>{items?.qty}</h6>
 
                                 <button
                                   className="butn "
