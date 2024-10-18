@@ -8,7 +8,7 @@ const Home = () => {
   const [data, setdata] = useState(products);
   const [currentPage, setCurrentPage] = useState(1);
   const { item, setItem, cartItemlenght } = useContext(productData);
-  console.log("pro", data);
+
   const productsPerPage = 12;
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -52,8 +52,6 @@ const Home = () => {
   };
 
   const handleCart = (product) => {
-    console.log("produc", product);
-
     // const singleProduct = data.filter((num) => num.id === product.id);
     const updatedItems = [...item, product];
     setItem(updatedItems);

@@ -13,7 +13,7 @@ const About = () => {
       const filterItem = data?.filter((item) =>
         item.title.includes(searchdata)
       );
-      console.log("filter", filterItem);
+
       setdata(filterItem);
     } else {
       setdata(products);

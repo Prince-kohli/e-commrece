@@ -9,7 +9,6 @@ const AddItems = () => {
   const [singleProduct, setSingleProduct] = useState(
     JSON.parse(localStorage.getItem("Cart"))
   );
-  console.log("single", singleProduct);
 
   const removeItem = (item) => {
     const remove = singleProduct?.filter((items) => items?.id !== item?.id);
@@ -26,7 +25,7 @@ const AddItems = () => {
       const filterItem = data?.filter((item) =>
         item.title.includes(searchdata)
       );
-      console.log("filter", filterItem);
+
       setdata(filterItem);
     } else {
       setdata(products);
