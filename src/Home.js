@@ -56,6 +56,9 @@ const Home = () => {
     const updatedItems = [...item, product];
     setItem(updatedItems);
   };
+  const allData = () => {
+    setdata(products);
+  };
 
   return (
     <>
@@ -63,7 +66,7 @@ const Home = () => {
         <div class="container">
           <Link to="/">
             <a class="navbar-brand" href="">
-              <img src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/fkheaderlogo_exploreplus-44005d.svg" />
+              <img src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/fkheaderlogo_exploreplus-44005d.svg"  onClick={allData}/>
             </a>
           </Link>
 
